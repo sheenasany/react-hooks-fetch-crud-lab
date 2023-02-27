@@ -17,9 +17,37 @@ function QuestionForm(props) {
     });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(formData);
+  // can make the object outside and place in the body or can create it in the body
+  // I like this way better as its cleaner to read the post request
+  const newQuesObj = {
+    prompt: formData.prompt,
+    answers: [
+      formData.answer1,
+      formData.answer2,
+      formData.answer3,
+      formData.answer4
+    ],
+    correctIndex: parseInt(formData.correctIndex)
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // console.log(formData);
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newQuesObj)
+    })
+    setFormData({
+    prompt: "",
+    answer1: "",
+    answer2: "",
+    answer3: "",
+    answer4: "",
+    correctIndex: 0,
+    })
   }
 
   return (
